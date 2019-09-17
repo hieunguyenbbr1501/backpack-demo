@@ -9,15 +9,21 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "backpack/backupmanager": "^1.4",
         "backpack/crud": "^3.6",
+        "backpack/logmanager": "^2.3",
+        "backpack/permissionmanager": "^4.0",
+        "backpack/settings": "^2.1",
         "barryvdh/laravel-elfinder": "^0.4.3",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0"
     },
     "require-dev": {
+        "backpack/generators": "1.2.*",
         "facade/ignition": "^1.4",
         "fzaninotto/faker": "^1.4",
+        "laracasts/generators": "dev-master",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
         "phpunit/phpunit": "^8.0"

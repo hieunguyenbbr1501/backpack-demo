@@ -26,6 +26,9 @@ return [
     |
     */
 
+    'log' => env('APP_LOG', 'daily'),
+
+
     'env' => env('APP_ENV', 'production'),
 
     /*
