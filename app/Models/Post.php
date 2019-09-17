@@ -41,11 +41,14 @@ class Post extends Model
     |--------------------------------------------------------------------------
     */
     public function user(){
-        return $this->belongsTo('App\Models\BackpackUser');
+        return $this->belongsTo('App\Models\BackpackUser', 'user_id');
+    }
+    public function modifyuser(){
+        return $this->belongsTo('App\Models\BackpackUser','last_user_id');
     }
 
     public function tags(){
-        return $this->hasMany('Backpack\NewsCRUD\app\Models\Tag', 'post_tag');
+        return $this->belongsToMany('App\Models\Tag', 'post_tag','');
     }
 
     /*
@@ -109,6 +112,13 @@ public function __construct(array $attributes = [])
         // Placeholder for catching any exceptions
 
         $row->setAttribute('user_id', backpack_user()->id);
+        $row->setAttribute('last_user_id', backpack_user()->id);
+    }
+    public function onUpdating(\App\Models\Post $row)
+    {
+        // Placeholder for catching any exceptions
+
+        $row->setAttribute('last_user_id', backpack_user()->id);
     }
 
 }

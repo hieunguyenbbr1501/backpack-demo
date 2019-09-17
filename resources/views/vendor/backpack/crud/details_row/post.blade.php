@@ -2,13 +2,10 @@
 	<div class="row">
 		<div class="col-md-12">
 			<small>Use the <span class="label label-default">details_row</span> functionality to show more information about the entry, when that information does not fit inside the table column.</small><br><br>
-			<strong>Title:</strong><a href="{{ url('/post/'.$entry->slug) }}" {{ $entry->title }} <br>
-			<strong>Textarea:</strong> {{ $entry->title }} <br>
-			<strong>Email:</strong> {{ $entry->title }} <br>
-			<strong>Number:</strong> {{ $entry->title }} <br>
-			<strong>Float:</strong> {{ $entry->title }} <br>
-			<strong>Week:</strong> {{ $entry->title }} <br>
-			<strong>Month:</strong> {{ $entry->title }} <br>
+			<strong>Preview: </strong><a href="{{ url('/admin/post/'.$entry->slug) }}">{{ $entry->title }} <br></a>
+			<strong>Content:</strong> {!! $entry->content !!} <br>
+			<strong>Created by:</strong> {{ $entry->user_id }} at {{ $entry->created_at }} <br>
+			<strong>Last Modified:</strong> {{ $entry->last_user_id }} at {{ $entry->updated_at }} <br>
 			etc.
 		</div>
 	</div>

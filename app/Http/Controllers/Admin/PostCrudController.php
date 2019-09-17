@@ -9,6 +9,8 @@ use App\Http\Requests\PostRequest as StoreRequest;
 use App\Http\Requests\PostRequest as UpdateRequest;
 use Backpack\CRUD\CrudPanel;
 use Auth;
+use App\Models\Post;
+
 
 /**
  * Class PostCrudController
@@ -18,7 +20,7 @@ use Auth;
 class PostCrudController extends CrudController
 {
     public function setup()
-    {
+    {   
         /*
         |--------------------------------------------------------------------------
         | CrudPanel Basic Information
@@ -54,6 +56,15 @@ class PostCrudController extends CrudController
             ], */
             'title',
             'slug',
+            [
+                // select_multiple: n-n relationship (with pivot table)
+                'label'     => 'Tags', // Table column heading
+                'type'      => 'select_multiple',
+                'name'      => 'tags', // the method that defines the relationship in your Model
+                'entity'    => 'tags', // the method that defines the relationship in your Model
+                'attribute' => 'name', // foreign key attribute that is shown to user
+                'model'     => "App\Models\Tag", // foreign key model
+             ],
             'content',
             [
                 "name" => "thumbnail",
@@ -69,7 +80,33 @@ class PostCrudController extends CrudController
                 'allows_null'   => true,
                 'pivot'         => true, // on create&update, do you need to add/delete pivot table entries?
             ], */
-            'user_id',
+            [
+                // select_multiple: n-n relationship (with pivot table)
+                'label'     => 'Created by', // Table column heading
+                'type'      => 'select',
+                'name'      => 'user_id', // the method that defines the relationship in your Model
+                'entity'    => 'user', // the method that defines the relationship in your Model
+                'attribute' => 'name', // foreign key attribute that is shown to user
+                'model'     => "App\Models\BackpackUser", // foreign key model
+             ],
+             [
+                // select_multiple: n-n relationship (with pivot table)
+                'label'     => 'Updated by', // Table column heading
+                'type'      => 'select',
+                'name'      => 'last_user_id', // the method that defines the relationship in your Model
+                'entity'    => 'modifyuser', // the method that defines the relationship in your Model
+                'attribute' => 'name', // foreign key attribute that is shown to user
+                'model'     => "App\Models\BackpackUser", // foreign key model
+             ],
+            //  [
+            //     // select_multiple: n-n relationship (with pivot table)
+            //     'label'     => 'Last Modified by', // Table column heading
+            //     'type'      => 'text',
+            //     'name'      => 'modifyuser', // the method that defines the relationship in your Model
+            //     'entity'    => 'modifyuser', // the method that defines the relationship in your Model
+            //     'attribute' => 'name', // foreign key attribute that is shown to user
+            //     'model'     => "App\Models\BackpackUser", // foreign key model
+            //  ],
             'created_at',
             'updated_at'
         ]);
@@ -78,11 +115,11 @@ class PostCrudController extends CrudController
              $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
                 'label'         => 'Tags',
                 'type'          => 'select2_multiple',
-                'name'          => 'tag', // the method that defines the relationship in your Model
-                'entity'        => 'tag', // the method that defines the relationship in your Model
+                'name'          => 'tags', // the method that defines the relationship in your Model
+                'entity'        => 'tags', // the method that defines the relationship in your Model
                 'attribute'     => 'name', // foreign key attribute that is shown to user
                 'model'         => "App\Models\Tag", // foreign key model
-                'allows_null'   => true,
+                //'allows_null'   => true,
                 'pivot'         => true, // on create&update, do you need to add/delete pivot table entries?
                 
             ]);
@@ -160,5 +197,11 @@ class PostCrudController extends CrudController
    });
 
     }
-       
+
+    public function show($slug){
+        $post = Post::where('slug', $slug)->firstOrFail();
+        return view('vendor.backpack.base.post')->with(compact('post'));
+    }
+     
+    
 }

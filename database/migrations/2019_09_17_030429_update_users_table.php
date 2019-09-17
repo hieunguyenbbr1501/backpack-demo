@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class PostsHasTags extends Migration
+class UpdateUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,6 +14,9 @@ class PostsHasTags extends Migration
     public function up()
     {
         //
+        Schema::table('users', function($table){
+            $table->boolean('is_admin')->default(null);
+        });
     }
 
     /**
