@@ -201,10 +201,18 @@ class PostCrudController extends CrudController
     }
 
     public function show($slug){
+        if(!backpack_user()->hasRole('admin')){
+            Alert::error('You do not have the permission')->flash();
+            return redirect('/admin/post');
+        }
         $post = Post::where('slug', $slug)->firstOrFail();
         return view('vendor.backpack.base.post')->with(compact('post'));
     }
     public function publish($slug){
+        if(!backpack_user()->hasRole('admin')){
+            Alert::error('You do not have the permission')->flash();
+            return redirect('/admin/post');
+        }
         $post = Post::where('slug', $slug)->firstOrFail();
         if($post->update(['publish' => 1])){
             Alert::success('Post has been published properly')->flash();

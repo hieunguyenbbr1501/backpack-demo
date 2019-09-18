@@ -95,7 +95,7 @@ return [
         App\Http\Middleware\CheckIfAdmin::class,
         \App\Http\Middleware\BackendMiddleware::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        // \Backpack\Base\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard::class,
+        \Backpack\Base\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard::class,
     ],
 
     // Alias for that middleware
