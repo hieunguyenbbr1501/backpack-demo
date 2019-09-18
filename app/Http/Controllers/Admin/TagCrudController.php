@@ -7,7 +7,11 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\TagRequest as StoreRequest;
 use App\Http\Requests\TagRequest as UpdateRequest;
+use DB;
 use Backpack\CRUD\CrudPanel;
+use App\Models\Post;
+use App\Models\Tag;
+use Alert;
 
 /**
  * Class TagCrudController
@@ -32,6 +36,10 @@ class TagCrudController extends CrudController
         | CrudPanel Configuration
         |--------------------------------------------------------------------------
         */
+        $this->crud->allowAccess('show');
+        $this->crud->enableDetailsRow();
+        $this->crud->allowAccess('details_row');
+        $this->crud->setDetailsRowView('vendor.backpack.crud.details_row.tag');
 
         // TODO: remove setFromDb() and manually define Fields and Columns
         $this->crud->setFromDb();
@@ -57,5 +65,21 @@ class TagCrudController extends CrudController
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
         return $redirect_location;
+    }
+    public function show($id){
+        $tag = Tag::where('id', $id)->firstOrFail();
+        $pivot = DB::table('post_tag')->where('tag_id',$id)->get();
+        $post_id_array = [];
+        foreach($pivot as $p){
+            $post_id_array[] = $p->post_id;
+        }
+        //dd($pivot);
+        $post = Post::whereIn('id',$post_id_array)->get();
+        if($post->count() == 0){
+            Alert::error('No posts made with the tag')->flash();
+            return redirect()->back();
+            
+        }
+        return view('vendor.backpack.base.tag')->with(compact('post'));
     }
 }

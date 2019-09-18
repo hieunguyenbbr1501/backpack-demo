@@ -24,7 +24,7 @@ class Post extends Model
     // public $timestamps = false;
     // protected $guarded = ['id'];
     protected $fillable = [
-        'title', 'thumbnail', 'content','user_id'
+        'title', 'thumbnail', 'content','user_id','publish'
     ];
     // protected $hidden = [];
     // protected $dates = [];

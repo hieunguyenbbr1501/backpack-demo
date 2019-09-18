@@ -10,6 +10,7 @@ use App\Http\Requests\PostRequest as UpdateRequest;
 use Backpack\CRUD\CrudPanel;
 use Auth;
 use App\Models\Post;
+use Alert;
 
 
 /**
@@ -55,7 +56,6 @@ class PostCrudController extends CrudController
                 //],
             ], */
             'title',
-            'slug',
             [
                 // select_multiple: n-n relationship (with pivot table)
                 'label'     => 'Tags', // Table column heading
@@ -65,7 +65,6 @@ class PostCrudController extends CrudController
                 'attribute' => 'name', // foreign key attribute that is shown to user
                 'model'     => "App\Models\Tag", // foreign key model
              ],
-            'content',
             [
                 "name" => "thumbnail",
                 "label" => "Thumbnail",
@@ -80,6 +79,7 @@ class PostCrudController extends CrudController
                 'allows_null'   => true,
                 'pivot'         => true, // on create&update, do you need to add/delete pivot table entries?
             ], */
+            'publish',
             [
                 // select_multiple: n-n relationship (with pivot table)
                 'label'     => 'Created by', // Table column heading
@@ -108,7 +108,9 @@ class PostCrudController extends CrudController
             //     'model'     => "App\Models\BackpackUser", // foreign key model
             //  ],
             'created_at',
-            'updated_at'
+            'updated_at',
+            
+            
         ]);
         if(backpack_user()->hasRole('admin')){
             
@@ -202,6 +204,27 @@ class PostCrudController extends CrudController
         $post = Post::where('slug', $slug)->firstOrFail();
         return view('vendor.backpack.base.post')->with(compact('post'));
     }
-     
+    public function publish($slug){
+        $post = Post::where('slug', $slug)->firstOrFail();
+        if($post->update(['publish' => 1])){
+            Alert::success('Post has been published properly')->flash();
+            return redirect('/admin/post');
+        }
+        else{
+            Alert::error('There was some error, please try again')->flash();
+            return redirect('/admin/post');
+        }
+    }
+    public function unpublish($slug){
+        $post = Post::where('slug', $slug)->firstOrFail();
+        if($post->update(['publish' => 0])){
+            Alert::success('Post has been unpublished properly')->flash();
+            return redirect('/admin/post');
+        }
+        else{
+            Alert::error('There was some error, please try again')->flash();
+            return redirect('/admin/post');
+        }
+    }
     
 }

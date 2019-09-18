@@ -16,8 +16,8 @@ Route::get('/', function () {
 });
 Route::group([
     'prefix'     => config('backpack.base.route_prefix', 'admin'),
-    //'middleware' => ['web', 'admin'],
+    'middleware' => ['web', 'admin'],
     'namespace'  => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
-    Route::get('/post/{slug}', 'AdminController@showPost');
+    //Route::get('/post/{slug}', 'AdminController@showPost');
 });

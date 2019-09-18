@@ -14,4 +14,6 @@ Route::group([
     CRUD::resource('post', 'PostCrudController');
     CRUD::resource('tag', 'TagCrudController');
     CRUD::resource('user', 'UserCrudController');
+    Route::get('/post/{slug}/publish', 'PostCrudController@publish');
+    Route::get('/post/{slug}/unpublish','PostCrudController@unpublish');
 }); // this should be the absolute last line of this file
