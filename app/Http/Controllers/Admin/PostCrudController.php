@@ -68,7 +68,9 @@ class PostCrudController extends CrudController
             [
                 "name" => "thumbnail",
                 "label" => "Thumbnail",
-                "type" => "image"
+                "type" => "image",
+                "height" => '60px',
+                "width" => '60px'
             ],
             /* [
                 "name" => "tags",
@@ -79,7 +81,12 @@ class PostCrudController extends CrudController
                 'allows_null'   => true,
                 'pivot'         => true, // on create&update, do you need to add/delete pivot table entries?
             ], */
-            'publish',
+            [
+                "name" => "publish",
+                "label" => "Publish",
+                "type" => "Boolean",
+                "options" => [0 => "No", 1 => "Yes"]
+            ],
             [
                 // select_multiple: n-n relationship (with pivot table)
                 'label'     => 'Created by', // Table column heading
@@ -112,6 +119,12 @@ class PostCrudController extends CrudController
             
             
         ]);
+        $this->crud->setColumnDetails('title',[ 
+        'label' => "Title",
+        'type' => "model_function",
+        'name' => 'title',
+        'function_name' => 'getLinkTitle',        
+        ]);
         if(backpack_user()->hasRole('admin')){
             
              $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
@@ -128,7 +141,8 @@ class PostCrudController extends CrudController
             $this->crud->addField([
                 'label' => 'title',
                 'name' => 'title',
-                'type' => 'text'
+                'type' => 'text',
+                
             ]);
 
             $this->crud->addField([
@@ -201,11 +215,16 @@ class PostCrudController extends CrudController
     }
 
     public function show($slug){
-        if(!backpack_user()->hasRole('admin')){
-            Alert::error('You do not have the permission')->flash();
-            return redirect('/admin/post');
-        }
         $post = Post::where('slug', $slug)->firstOrFail();
+        if(!backpack_user()->hasRole('admin')){
+            {
+                if(!$post->publish){
+                    Alert::error('Post has not been published yet')->flash();
+                    return redirect('/');
+                }
+            }
+        }
+        
         return view('vendor.backpack.base.post')->with(compact('post'));
     }
     public function publish($slug){

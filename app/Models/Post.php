@@ -73,6 +73,9 @@ class Post extends Model
         $this->attributes['title'] = $value;
         $this->attributes[$attribute_name] = Str::slug($value);
     }
+    public function getLinkTitle(){
+        return "<a href='/" .$this->slug ."'>".$this->title."</a>";
+    }
     public function setThumbnailAttribute($value){
         $attribute_name = 'thumbnail';
         $disk = config('backpack.base.root_disk_name'); // use Backpack's root disk; or your own
@@ -110,15 +113,20 @@ public function __construct(array $attributes = [])
     public function onCreating(\App\Models\Post $row)
     {
         // Placeholder for catching any exceptions
-
-        $row->setAttribute('user_id', backpack_user()->id);
+        if(Auth::check()){
+            $row->setAttribute('user_id', backpack_user()->id);
         $row->setAttribute('last_user_id', backpack_user()->id);
+        }
+        
     }
     public function onUpdating(\App\Models\Post $row)
     {
         // Placeholder for catching any exceptions
 
+        if(Auth::check()){
+        
         $row->setAttribute('last_user_id', backpack_user()->id);
+        }
     }
 
 }

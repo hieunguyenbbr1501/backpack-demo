@@ -82,4 +82,7 @@ class TagCrudController extends CrudController
         }
         return view('vendor.backpack.base.tag')->with(compact('post'));
     }
+    public function abc($slug){
+        dd('abc');
+    }
 }
