@@ -35,7 +35,7 @@ class PostCrudController extends CrudController
         | CrudPanel Configuration
         |--------------------------------------------------------------------------
         */
-        $this->crud->allowAccess('show');
+        //$this->crud->allowAccess('show');
         $this->crud->enableDetailsRow();
         $this->crud->allowAccess('details_row');
         $this->crud->setDetailsRowView('vendor.backpack.crud.details_row.post');
@@ -162,6 +162,11 @@ class PostCrudController extends CrudController
                 'name' => 'content',
                 'type'  => 'wysiwyg'
             ]);
+            $this->crud->addField([
+                'name' => 'last_user_id',
+                'type' => 'hidden',
+                'value' => backpack_user()->id,
+            ]);
         }
         //Fields
         // add asterisk for fields that are required in PostRequest
@@ -173,8 +178,6 @@ class PostCrudController extends CrudController
 
     public function store(StoreRequest $request)
     {
-        //dd(backpack_user()->id);
-        //dd($request->thumbnail);
         // your additional operations before save here
         $redirect_location = parent::storeCrud($request);
         // your additional operations after save here

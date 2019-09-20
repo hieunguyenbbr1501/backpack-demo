@@ -12,7 +12,7 @@ class MainPageController extends Controller
     public function show($slug){
         $post = Post::where('slug',$slug)->firstOrFail();
         if(!$post->publish){
-            return view('errors.404');
+            abort(404);
         }
         return view('main.post')->with(compact('post'));
     }

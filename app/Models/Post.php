@@ -24,7 +24,7 @@ class Post extends Model
     // public $timestamps = false;
     // protected $guarded = ['id'];
     protected $fillable = [
-        'title', 'thumbnail', 'content','user_id','publish'
+        'title', 'thumbnail', 'content','user_id','publish','last_user_id'
     ];
     // protected $hidden = [];
     // protected $dates = [];
@@ -108,28 +108,9 @@ class Post extends Model
 }
 public function __construct(array $attributes = [])
     {
-        $this->creating([$this, 'onCreating']);
-        $this->updating([$this, 'onUpdating']);
         parent::__construct($attributes);
     }
 
-    public function onCreating(\App\Models\Post $row)
-    {
-        // Placeholder for catching any exceptions
-        if(Auth::check()){
-            $row->setAttribute('user_id', backpack_user()->id);
-        $row->setAttribute('last_user_id', backpack_user()->id);
-        }
-        
-    }
-    public function onUpdating(\App\Models\Post $row)
-    {
-        // Placeholder for catching any exceptions
-
-        if(Auth::check()){
-        
-        $row->setAttribute('last_user_id', backpack_user()->id);
-        }
-    }
+   
 
 }

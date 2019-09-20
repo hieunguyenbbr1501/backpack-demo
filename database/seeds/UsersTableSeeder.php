@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\BackpackUser as User;
 
 class UsersTableSeeder extends Seeder
 {
@@ -10,31 +11,32 @@ class UsersTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-        if (DB::table('users')->where('email', 'admin@example.com')->count() == 0) {
-            DB::table('users')->insert([
-                'name'     => 'Demo Admin',
-                'email'    => 'admin@example.com',
-                'password' => bcrypt('admin'),
-                'is_admin' => 1
-            ]);
-        }
-        if (DB::table('users')->where('email', 'backend@example.com')->count() == 0) {
-            DB::table('users')->insert([
-                'name'     => 'Demo Backend',
-                'email'    => 'backend@example.com',
-                'password' => bcrypt('backend'),
-                'is_admin' => 1
-            ]);
-        }
-        if (DB::table('users')->where('email', 'backend@example.com')->count() == 0) {
-            DB::table('users')->insert([
-                'name'     => 'Demo User',
-                'email'    => 'user@example.com',
-                'password' => bcrypt('user'),
-                'is_admin' => 0
-            ]);
-        }
+    {   
+        User::firstOrCreate([
+            'email'    => 'admin@example.com',
+        ],
+        [
+            'name'     => 'Demo Admin',
+            'password' => bcrypt('admin'),
+            'is_admin' => 1
+        ]);
+        User::firstOrCreate([
+            'email'    => 'backend@example.com',
+        ],
+        [
+            'name'     => 'Demo Backend',
+            'password' => bcrypt('backend'),
+            'is_admin' => 1
+        ]);
+        User::firstOrCreate([
+            'email'    => 'user@example.com',
+        ],
+        [
+            'name'     => 'Demo User',
+            'password' => bcrypt('user'),
+            'is_admin' => 0
+        ]);
+        
     
     }
 }
