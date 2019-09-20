@@ -120,6 +120,8 @@ class PostCrudController extends CrudController
             
         ]);
         $this->crud->setColumnDetails('title',[ 
+        'limit' => 200,
+        'priority' => 1,
         'label' => "Title",
         'type' => "model_function",
         'name' => 'title',

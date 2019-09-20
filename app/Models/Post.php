@@ -102,6 +102,9 @@ class Post extends Model
             $public_destination_path = Str::replaceFirst('public/', '', $destination_path);
             $this->attributes[$attribute_name] = $public_destination_path.'/'.$filename;
         }
+        else{
+            $this->attributes[$attribute_name] = $value;
+        }
 }
 public function __construct(array $attributes = [])
     {
